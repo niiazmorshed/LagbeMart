@@ -1,11 +1,16 @@
 "use client";
+import { useRegisterUserMutation } from "@/lib/services/authApi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const [registerUser] = useRegisterUserMutation();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,20 +31,21 @@ export default function RegisterPage() {
     }
 
     try {
-      const res = await fetch("/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data?.success) {
-        throw new Error(data?.error || "Failed to create account");
+      const data = await registerUser({ name, email, password }).unwrap();
+      if (!data?.success) {
+        const errMsg =
+          (data as { error?: string })?.error || "Failed to create account";
+        throw new Error(errMsg);
       }
-      setMessage("Account created successfully. You can sign in now.");
+      toast.success("Account created successfully");
+      setMessage("Account created successfully.");
       form.reset();
+      // Redirect to home
+      router.push("/");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong";
       setError(msg);
+      toast.error(msg);
     } finally {
       setSubmitting(false);
     }

@@ -1,7 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import LogoutButton from "./components/LogoutButton";
 
-export default function Home() {
+export default async function Home() {
+  const store = await cookies();
+  const hasSession = Boolean(store.get("lm_session")?.value);
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navbar */}
@@ -26,12 +30,16 @@ export default function Home() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-              className="hidden sm:inline-flex items-center gap-2 rounded-md border border-black/10 px-3 py-2 text-sm hover:bg-black/5 transition-colors"
-            >
-              <span>Sign in</span>
-            </Link>
+            {hasSession ? (
+              <LogoutButton />
+            ) : (
+              <Link
+                href="/login"
+                className="hidden sm:inline-flex items-center gap-2 rounded-md border border-black/10 px-3 py-2 text-sm hover:bg-black/5 transition-colors"
+              >
+                <span>Sign in</span>
+              </Link>
+            )}
             <button className="inline-flex items-center gap-2 rounded-md bg-black text-white px-3 py-2 text-sm hover:bg-black/90 transition-colors">
               <span>Cart</span>
             </button>
