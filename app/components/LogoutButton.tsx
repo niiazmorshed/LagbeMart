@@ -13,8 +13,8 @@ export default function LogoutButton() {
         throw new Error(data?.error || "Logout failed");
       }
       toast.success("Logged out");
+      router.push("/login");
       router.refresh();
-      router.push("/");
     } catch (e: any) {
       toast.error(e?.message || "Logout failed");
     }

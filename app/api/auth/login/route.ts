@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "niaz@gmail.com";
 
 export async function POST(request: Request) {
   try {
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     const db = await getDb();
     const collection = db.collection("userCollection");
 
-    const user = await collection.findOne({ email });
+    let user = await collection.findOne({ email });
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Invalid email or password" },
@@ -32,8 +33,15 @@ export async function POST(request: Request) {
       );
     }
 
+    // Ensure role exists, default admin for configured email
+    const computedRole = user.role || (email === ADMIN_EMAIL ? "admin" : "buyer");
+    if (!user.role || user.role !== computedRole) {
+      await collection.updateOne({ _id: user._id }, { $set: { role: computedRole } });
+      user = { ...user, role: computedRole };
+    }
+
     // Set a simple session cookie on the response
-    const sessionValue = JSON.stringify({ email: user.email, name: user.name, id: String(user._id) });
+    const sessionValue = JSON.stringify({ email: user.email, name: user.name, id: String(user._id), role: user.role });
     const res = NextResponse.json({ success: true, data: { _id: user._id, email: user.email, name: user.name } });
     res.cookies.set("lm_session", sessionValue, {
       httpOnly: true,

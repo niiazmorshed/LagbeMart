@@ -29,6 +29,7 @@ export default function LoginPage() {
       }
       toast.success("Logged in successfully");
       router.push("/");
+      router.refresh();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong";
       toast.error(msg);

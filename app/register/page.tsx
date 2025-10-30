@@ -1,5 +1,5 @@
 "use client";
-import { useRegisterUserMutation } from "@/lib/services/authApi";
+import { useRegisterUserMutation, useLoginMutation } from "@/lib/services/authApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -11,6 +11,7 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [registerUser] = useRegisterUserMutation();
+  const [login] = useLoginMutation();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -37,11 +38,13 @@ export default function RegisterPage() {
           (data as { error?: string })?.error || "Failed to create account";
         throw new Error(errMsg);
       }
+      // Auto-login the new user so navbar shows their name immediately
+      await login({ email, password }).unwrap();
       toast.success("Account created successfully");
       setMessage("Account created successfully.");
       form.reset();
-      // Redirect to home
       router.push("/");
+      router.refresh();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong";
       setError(msg);

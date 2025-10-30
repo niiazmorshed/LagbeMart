@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "niaz@gmail.com";
+
 // GET /api/users - list users
 export async function GET() {
   try {
@@ -41,10 +43,12 @@ export async function POST(request: Request) {
     }
 
     const now = new Date();
+    const role = email === ADMIN_EMAIL ? "admin" : "buyer";
     const userDoc = {
       name,
       email,
       password, // In production, hash this. Storing plaintext is not secure.
+      role,
       createdAt: now,
       updatedAt: now,
     } as const;
