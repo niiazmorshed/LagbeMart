@@ -23,7 +23,7 @@ export default function LoginPage() {
               id="email"
               name="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="niazmorshedrafi@gmail.com"
               className="w-full rounded-md border border-black/15 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-black/20"
             />
           </div>

@@ -1,6 +1,49 @@
+"use client";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function RegisterPage() {
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage(null);
+    setError(null);
+
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    const name = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const password = String(formData.get("password") || "");
+
+    if (!name || !email || !password) {
+      setError("Please provide name, email and password.");
+      setSubmitting(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.error || "Failed to create account");
+      }
+      setMessage("Account created successfully. You can sign in now.");
+      form.reset();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Something went wrong";
+      setError(msg);
+    } finally {
+      setSubmitting(false);
+    }
+  }
   return (
     <main className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
@@ -8,13 +51,16 @@ export default function RegisterPage() {
           <h1 className="text-2xl font-bold">Create your account</h1>
           <p className="mt-2 text-sm text-black/70">
             Already have an account?{" "}
-            <Link href="/login" className="underline underline-offset-4 hover:opacity-80">
+            <Link
+              href="/login"
+              className="underline underline-offset-4 hover:opacity-80"
+            >
               Sign in
             </Link>
           </p>
         </div>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-1">
               Full name
@@ -23,7 +69,7 @@ export default function RegisterPage() {
               id="name"
               name="name"
               type="text"
-              placeholder="John Doe"
+              placeholder="Niaz Morshed"
               className="w-full rounded-md border border-black/15 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-black/20"
             />
           </div>
@@ -35,32 +81,43 @@ export default function RegisterPage() {
               id="email"
               name="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="niazmorshedrafi@gmail.com"
               className="w-full rounded-md border border-black/15 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-black/20"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium mb-1"
+            >
               Password
             </label>
             <input
               id="password"
               name="password"
               type="password"
-              placeholder="••••••••"
               className="w-full rounded-md border border-black/15 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-black/20"
             />
           </div>
+          {error ? (
+            <p className="text-sm text-red-600">{error}</p>
+          ) : message ? (
+            <p className="text-sm text-green-600">{message}</p>
+          ) : null}
           <button
-            type="button"
-            className="w-full rounded-md bg-black text-white py-2 font-medium hover:bg-black/90 transition-colors"
+            type="submit"
+            disabled={submitting}
+            className="w-full rounded-md bg-black text-white py-2 font-medium hover:bg-black/90 transition-colors disabled:opacity-60"
           >
-            Create account
+            {submitting ? "Creating..." : "Create account"}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <Link href="/" className="text-sm underline underline-offset-4 hover:opacity-80">
+          <Link
+            href="/"
+            className="text-sm underline underline-offset-4 hover:opacity-80"
+          >
             Back to home
           </Link>
         </div>
@@ -68,5 +125,3 @@ export default function RegisterPage() {
     </main>
   );
 }
-
-
