@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -25,9 +26,12 @@ export default function Home() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <button className="hidden sm:inline-flex items-center gap-2 rounded-md border border-black/10 px-3 py-2 text-sm hover:bg-black/5 transition-colors">
+            <Link
+              href="/login"
+              className="hidden sm:inline-flex items-center gap-2 rounded-md border border-black/10 px-3 py-2 text-sm hover:bg-black/5 transition-colors"
+            >
               <span>Sign in</span>
-            </button>
+            </Link>
             <button className="inline-flex items-center gap-2 rounded-md bg-black text-white px-3 py-2 text-sm hover:bg-black/90 transition-colors">
               <span>Cart</span>
             </button>
@@ -68,7 +72,7 @@ export default function Home() {
               </div>
             </div>
             <div className="relative h-64 md:h-96">
-              <div className="absolute -inset-x-10 -top-10 -bottom-10 rotate-6 bg-gradient-to-br from-black/10 via-black/5 to-transparent blur-2xl" />
+              <div className="absolute -inset-x-10 -top-10 -bottom-10 rotate-6 bg-linear-to-br from-black/10 via-black/5 to-transparent blur-2xl" />
               <div className="relative h-full w-full rounded-xl border border-black/10 bg-white/60 backdrop-blur-sm flex items-center justify-center">
                 <Image
                   src="/window.svg"
