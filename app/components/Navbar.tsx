@@ -12,14 +12,12 @@ export default async function Navbar() {
     <header className="border-b border-black/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="inline-block h-8 w-8 rounded bg-black/10" />
           <span className="text-lg font-semibold">LagbeMart</span>
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm">
           <Link href="/" className="hover:opacity-70 transition-opacity">Home</Link>
-          <a href="#" className="hover:opacity-70 transition-opacity">Shop</a>
-          <a href="#" className="hover:opacity-70 transition-opacity">Categories</a>
-          <a href="#" className="hover:opacity-70 transition-opacity">Contact</a>
+          <Link href="/shop" className="hover:opacity-70 transition-opacity">Shop</Link>
+          <Link href="/contact" className="hover:opacity-70 transition-opacity">Contact</Link>
         </nav>
         <div className="flex items-center gap-3">
           {session ? (

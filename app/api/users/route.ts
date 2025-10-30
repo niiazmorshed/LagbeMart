@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "niaz@gmail.com";
+const DEFAULT_SELLERS = (process.env.SELLER_EMAILS || "levi@gmail.com,erwin@gmail.com")
+  .split(",")
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
 
 // GET /api/users - list users
 export async function GET() {
@@ -43,7 +47,12 @@ export async function POST(request: Request) {
     }
 
     const now = new Date();
-    const role = email === ADMIN_EMAIL ? "admin" : "buyer";
+    const normalizedEmail = String(email).toLowerCase();
+    const role = normalizedEmail === ADMIN_EMAIL
+      ? "admin"
+      : DEFAULT_SELLERS.includes(normalizedEmail)
+      ? "seller"
+      : "buyer";
     const userDoc = {
       name,
       email,

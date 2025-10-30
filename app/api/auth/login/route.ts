@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "niaz@gmail.com";
+const DEFAULT_SELLERS = (process.env.SELLER_EMAILS || "levi@gmail.com,erwin@gmail.com")
+  .split(",")
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
 
 export async function POST(request: Request) {
   try {
@@ -34,7 +38,14 @@ export async function POST(request: Request) {
     }
 
     // Ensure role exists, default admin for configured email
-    const computedRole = user.role || (email === ADMIN_EMAIL ? "admin" : "buyer");
+    const normalizedEmail = String(email).toLowerCase();
+    const computedRole =
+      user.role ||
+      (normalizedEmail === ADMIN_EMAIL
+        ? "admin"
+        : DEFAULT_SELLERS.includes(normalizedEmail)
+        ? "seller"
+        : "buyer");
     if (!user.role || user.role !== computedRole) {
       await collection.updateOne({ _id: user._id }, { $set: { role: computedRole } });
       user = { ...user, role: computedRole };

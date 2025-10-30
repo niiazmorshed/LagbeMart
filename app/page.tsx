@@ -1,50 +1,37 @@
-import Image from "next/image";
+// Home contains only the banner; navbar is rendered via layout
 
 export default async function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Hero Banner */}
+      {/* Hero Banner - Solid gradient background */}
       <main className="flex-1">
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(0,0,0,0.08),transparent)]" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <div>
-              <span className="inline-block text-xs font-medium tracking-wide uppercase text-black/60">
-                Your Everyday Marketplace
-              </span>
-              <h1 className="mt-3 text-3xl md:text-5xl font-bold leading-tight">
-                Discover deals on everything you need
-              </h1>
-              <p className="mt-4 text-sm md:text-base text-black/70 max-w-prose">
-                Shop thousands of products with fast delivery and secure
-                checkout. From essentials to the latest trends, we have you
-                covered.
-              </p>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <a
-                  href="#"
-                  className="inline-flex items-center rounded-md bg-black text-white px-4 py-2 text-sm md:text-base hover:bg-black/90 transition-colors"
-                >
-                  Start Shopping
-                </a>
-                <a
-                  href="#"
-                  className="inline-flex items-center rounded-md border border-black/15 px-4 py-2 text-sm md:text-base hover:bg-black/5 transition-colors"
-                >
-                  Browse Categories
-                </a>
-              </div>
-            </div>
-            <div className="relative h-64 md:h-96">
-              <div className="absolute -inset-x-10 -top-10 -bottom-10 rotate-6 bg-linear-to-br from-black/10 via-black/5 to-transparent blur-2xl" />
-              <div className="relative h-full w-full rounded-xl border border-black/10 bg-white/60 backdrop-blur-sm flex items-center justify-center">
-                <Image
-                  src="/window.svg"
-                  alt="Shopping showcase"
-                  width={420}
-                  height={320}
-                  priority
-                />
+        {/* Gradient banner similar to the example (orange → blue) */}
+        <section className="relative py-10 md:py-14">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="rounded-xl overflow-hidden border border-black/10">
+              <div className="bg-[linear-gradient(135deg,#e26a2c_0%,#ef8354_15%,#6aa7ff_100%)] text-white">
+                <div className="px-6 md:px-12 py-16 md:py-24 text-center">
+                  <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
+                    Learn Through <span className="opacity-95">Interactive</span> Experience
+                  </h1>
+                  <p className="mt-4 text-white/90 max-w-2xl mx-auto">
+                    Discover curated products with fast delivery, adaptive deals, and personalized shopping pathways.
+                  </p>
+                  <div className="mt-8 flex items-center justify-center gap-4">
+                    <a
+                      href="/shop"
+                      className="inline-flex items-center rounded-md bg-white text-black px-4 py-2 text-sm md:text-base hover:bg-white/90 transition-colors"
+                    >
+                      Start Shopping Today
+                    </a>
+                    <a
+                      href="/contact"
+                      className="inline-flex items-center rounded-md bg-white/10 text-white border border-white/30 px-4 py-2 text-sm md:text-base hover:bg-white/15 transition-colors"
+                    >
+                      Contact Us
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
