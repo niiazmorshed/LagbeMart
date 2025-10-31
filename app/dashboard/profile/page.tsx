@@ -21,14 +21,14 @@ export default async function ProfilePage() {
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Admin Profile</h1>
-        <p className="text-sm text-black/70">Manage your administrator account and view profile information</p>
+        <h1 className="text-2xl font-bold">Profile</h1>
+        <p className="text-sm text-black/70">Manage your account and view profile information</p>
       </div>
 
-      <div className="rounded-lg border border-black/10 overflow-hidden">
-        <div className="bg-linear-to-r from-indigo-500/20 to-fuchsia-500/20 px-6 py-5">
-          <div className="text-sm font-medium">Administrator Account</div>
-          <div className="text-xs text-black/70">Full administrative access to the platform</div>
+      <div className="rounded-xl border border-black/10 overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-500/15 to-purple-500/15 px-6 py-5">
+          <div className="text-sm font-medium">Account Overview</div>
+          <div className="text-xs text-black/70">Your profile details</div>
         </div>
         <div className="px-6 py-6">
           <div className="flex items-center gap-4">
@@ -38,9 +38,9 @@ export default async function ProfilePage() {
             <div className="min-w-0">
               <div className="font-semibold truncate">{displayName}</div>
               <div className="text-sm text-black/70 truncate">{email}</div>
-              <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-rose-100 text-rose-700 px-2 py-0.5 text-xs">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-rose-600" />
-                {role === "admin" ? "Administrator" : role.charAt(0).toUpperCase() + role.slice(1)}
+              <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-600" />
+                {role?.charAt(0).toUpperCase() + role?.slice(1)}
               </div>
             </div>
           </div>
@@ -56,7 +56,7 @@ export default async function ProfilePage() {
             </div>
             <div className="rounded-md border border-black/10 p-4">
               <div className="text-xs uppercase text-black/60">Permissions</div>
-              <div className="mt-1">{role === "admin" ? "Full Access" : "Standard"}</div>
+              <div className="mt-1">{role === "admin" ? "Full Access" : role === "seller" ? "Seller Access" : "Standard"}</div>
             </div>
             <div className="rounded-md border border-black/10 p-4 md:col-span-3">
               <div className="text-xs uppercase text-black/60">Last Updated</div>

@@ -17,7 +17,7 @@ async function createClient(): Promise<MongoClient> {
   await client.connect();
   return client;
 }
-
+  
 export async function getMongoClient(): Promise<MongoClient> {
   if (cachedClient) return cachedClient;
 
