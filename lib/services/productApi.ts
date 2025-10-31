@@ -2,6 +2,10 @@ import { api } from "./api";
 
 export const productApi = api.injectEndpoints({
   endpoints: (build) => ({
+    listProducts: build.query<{ success: boolean; data: any[] }, { q?: string; category?: string; page?: number; limit?: number } | void>({
+      query: (params) => ({ url: "/products", params: params as any }),
+      providesTags: ["User"],
+    }),
     listMyProducts: build.query<{ success: boolean; data: any[] }, { q?: string; category?: string; page?: number; limit?: number } | void>({
       query: (params) => ({ url: "/products/seller/my-products", params: params as any }),
       providesTags: ["User"],
@@ -21,6 +25,6 @@ export const productApi = api.injectEndpoints({
   }),
 });
 
-export const { useListMyProductsQuery, useAddProductMutation, useDeleteProductMutation, useUpdateProductMutation } = productApi;
+export const { useListProductsQuery, useListMyProductsQuery, useAddProductMutation, useDeleteProductMutation, useUpdateProductMutation } = productApi;
 
 

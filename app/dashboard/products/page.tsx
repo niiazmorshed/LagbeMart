@@ -1,11 +1,14 @@
 "use client";
 import { useListMyProductsQuery, useDeleteProductMutation } from "@/lib/services/productApi";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function ProductsPage() {
+  const router = useRouter();
   const [q, setQ] = useState("");
   const { data, isLoading, refetch } = useListMyProductsQuery({ q });
-  const [deleteProduct] = useDeleteProductMutation();
+  const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   const products = data?.data || [];
 
   return (
@@ -27,15 +30,14 @@ export default function ProductsPage() {
               <th className="py-2 pr-4">Category</th>
               <th className="py-2 pr-4">Price</th>
               <th className="py-2 pr-4">Stock</th>
-              <th className="py-2 pr-4">Status</th>
               <th className="py-2 pr-4">Actions</th>
             </tr>
           </thead>
           <tbody>
             {isLoading ? (
-              <tr><td className="py-4" colSpan={7}>Loading...</td></tr>
+              <tr><td className="py-4" colSpan={6}>Loading...</td></tr>
             ) : products.length === 0 ? (
-              <tr><td className="py-4" colSpan={7}>No products found.</td></tr>
+              <tr><td className="py-4" colSpan={6}>No products found.</td></tr>
             ) : (
               products.map((p: any) => (
                 <tr key={String(p._id)} className="border-b border-black/5">
@@ -46,15 +48,20 @@ export default function ProductsPage() {
                   <td className="py-2 pr-4">{p.category}</td>
                   <td className="py-2 pr-4">${p.price}</td>
                   <td className="py-2 pr-4">{p.stock}</td>
-                  <td className="py-2 pr-4">{p.status}</td>
                   <td className="py-2 pr-4">
-                    <button className="text-blue-600 hover:underline mr-3">Edit</button>
+                    <button onClick={() => router.push(`/dashboard/products/edit/${p._id}`)} className="text-blue-600 hover:underline mr-3">Edit</button>
                     <button
                       className="text-red-600 hover:underline"
+                      disabled={isDeleting}
                       onClick={async () => {
                         if (!confirm("Delete this product?")) return;
-                        await deleteProduct(String(p._id));
-                        refetch();
+                        try {
+                          await deleteProduct(String(p._id)).unwrap();
+                          toast.success("Product deleted");
+                          refetch();
+                        } catch (e: any) {
+                          toast.error(e?.message || "Failed to delete");
+                        }
                       }}
                     >
                       Delete
