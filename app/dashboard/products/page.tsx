@@ -1,10 +1,11 @@
 "use client";
-import { useListProductsQuery } from "@/lib/services/productApi";
+import { useListMyProductsQuery, useDeleteProductMutation } from "@/lib/services/productApi";
 import { useState } from "react";
 
 export default function ProductsPage() {
   const [q, setQ] = useState("");
-  const { data, isLoading } = useListProductsQuery({ q });
+  const { data, isLoading, refetch } = useListMyProductsQuery({ q });
+  const [deleteProduct] = useDeleteProductMutation();
   const products = data?.data || [];
 
   return (
@@ -48,7 +49,16 @@ export default function ProductsPage() {
                   <td className="py-2 pr-4">{p.status}</td>
                   <td className="py-2 pr-4">
                     <button className="text-blue-600 hover:underline mr-3">Edit</button>
-                    <button className="text-red-600 hover:underline">Delete</button>
+                    <button
+                      className="text-red-600 hover:underline"
+                      onClick={async () => {
+                        if (!confirm("Delete this product?")) return;
+                        await deleteProduct(String(p._id));
+                        refetch();
+                      }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))
