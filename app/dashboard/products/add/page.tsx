@@ -4,24 +4,23 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddProductMutation } from "@/lib/services/productApi";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const schema = z.object({
   title: z.string().min(2),
   description: z.string().min(10),
   category: z.string().min(2),
   price: z.coerce.number().positive(),
-  discountedPrice: z.coerce.number().nonnegative().optional(),
   stock: z.coerce.number().int().nonnegative(),
 });
 
 type FormValues = z.infer<typeof schema> & {
   images: FileList;
-  video?: FileList;
 };
 
 export default function AddProductPage() {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const imageInputRef = useRef<HTMLInputElement>(null);
   const [addProduct, { isLoading }] = useAddProductMutation();
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -36,9 +35,7 @@ export default function AddProductPage() {
           images.push(url);
         }
       }
-      const video = values.video && values.video[0] ? await fileToDataUrl(values.video[0]) : null;
-      const payload = { ...values, images, video } as any;
-      delete (payload as any).video?.length;
+      const payload = { ...values, images } as any;
       const res = await addProduct(payload).unwrap();
       if (!res?.success) throw new Error(res?.error || "Failed to add product");
       toast.success("Product added");
@@ -74,25 +71,39 @@ export default function AddProductPage() {
               <input type="number" step="0.01" className="w-full rounded-md border border-black/15 px-3 py-2" {...register("price")} />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Discounted Price</label>
-              <input type="number" step="0.01" className="w-full rounded-md border border-black/15 px-3 py-2" {...register("discountedPrice")} />
+              <label className="block text-sm font-medium mb-1">Stock</label>
+              <input type="number" className="w-full rounded-md border border-black/15 px-3 py-2" {...register("stock")} />
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Stock</label>
-            <input type="number" className="w-full rounded-md border border-black/15 px-3 py-2" {...register("stock")} />
-          </div>
+        
         </div>
 
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">Images (up to 6)</label>
-            <input type="file" accept="image/*" multiple {...register("images")} onChange={(e) => {
-              const files = e.target.files;
-              if (!files) return;
-              const urls = Array.from(files).slice(0, 6).map((f) => URL.createObjectURL(f));
-              setPreviewImages(urls);
-            }} />
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => imageInputRef.current?.click()}
+                className="rounded-md border border-black/15 px-3 py-2 text-sm hover:bg-black/5"
+              >
+                Choose Images
+              </button>
+              <input
+                ref={imageInputRef}
+                className="hidden"
+                type="file"
+                accept="image/*"
+                multiple
+                {...register("images")}
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (!files) return;
+                  const urls = Array.from(files).slice(0, 6).map((f) => URL.createObjectURL(f));
+                  setPreviewImages(urls);
+                }}
+              />
+            </div>
             {previewImages.length > 0 && (
               <div className="mt-3 grid grid-cols-3 gap-2">
                 {previewImages.map((src, i) => (
@@ -100,10 +111,6 @@ export default function AddProductPage() {
                 ))}
               </div>
             )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Video (optional)</label>
-            <input type="file" accept="video/*" {...register("video")} />
           </div>
           <div className="pt-2">
             <button disabled={isLoading} className="rounded-md bg-black text-white px-4 py-2 text-sm disabled:opacity-60">
