@@ -14,9 +14,7 @@ const schema = z.object({
   stock: z.coerce.number().int().nonnegative(),
 });
 
-type FormValues = z.infer<typeof schema> & {
-  images: FileList;
-};
+type FormValues = z.infer<typeof schema>;
 
 export default function AddProductPage() {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
@@ -27,20 +25,31 @@ export default function AddProductPage() {
   });
 
   const onSubmit = async (values: FormValues) => {
+    const files = imageInputRef.current?.files;
     try {
-      const images: string[] = [];
-      if (values.images && values.images.length) {
-        for (const file of Array.from(values.images)) {
+      const base64s: string[] = [];
+      if (files && files.length) {
+        for (const file of Array.from(files)) {
           const url = await fileToDataUrl(file);
-          images.push(url);
+          base64s.push(url);
         }
       }
+      // upload to cloudinary
+      const uploadRes = await fetch("/api/uploads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ images: base64s }),
+      });
+      const uploadData = await uploadRes.json();
+      if (!uploadRes.ok || !uploadData?.success) throw new Error(uploadData?.error || "Image upload failed");
+      const images: string[] = uploadData.urls || [];
       const payload = { ...values, images } as any;
       const res = await addProduct(payload).unwrap();
       if (!res?.success) throw new Error(res?.error || "Failed to add product");
       toast.success("Product added");
       reset();
       setPreviewImages([]);
+      if (imageInputRef.current) imageInputRef.current.value = "";
     } catch (e: any) {
       toast.error(e?.message || "Failed");
     }
@@ -95,7 +104,6 @@ export default function AddProductPage() {
                 type="file"
                 accept="image/*"
                 multiple
-                {...register("images")}
                 onChange={(e) => {
                   const files = e.target.files;
                   if (!files) return;
