@@ -3,11 +3,12 @@ import { getDb } from "@/lib/mongodb";
 import { cookies } from "next/headers";
 import { ObjectId } from "mongodb";
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const db = await getDb();
     const col = db.collection("productCollection");
-    const prod = await col.findOne({ _id: new ObjectId(params.id) });
+    const prod = await col.findOne({ _id: new ObjectId(id) });
     if (!prod) return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
     return NextResponse.json({ success: true, data: prod });
   } catch (e: any) {
@@ -15,8 +16,9 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const store = await cookies();
     const raw = store.get("lm_session")?.value;
     if (!raw) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
@@ -28,7 +30,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const sellerId = seller?._id;
 
     const col = db.collection("productCollection");
-    const existing = await col.findOne({ _id: new ObjectId(params.id) });
+    const existing = await col.findOne({ _id: new ObjectId(id) });
     if (!existing) return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
     if (!existing.sellerId || String(existing.sellerId) !== String(sellerId)) {
       return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
@@ -52,8 +54,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const store = await cookies();
     const raw = store.get("lm_session")?.value;
     if (!raw) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
@@ -65,7 +68,7 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
     const sellerId = seller?._id;
 
     const col = db.collection("productCollection");
-    const existing = await col.findOne({ _id: new ObjectId(params.id) });
+    const existing = await col.findOne({ _id: new ObjectId(id) });
     if (!existing) return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
     if (!existing.sellerId || String(existing.sellerId) !== String(sellerId)) {
       return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
