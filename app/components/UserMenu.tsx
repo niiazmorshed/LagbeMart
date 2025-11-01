@@ -21,8 +21,6 @@ export default function UserMenu({ name, email }: { name?: string; email: string
             <div className="text-black/70 truncate">{email}</div>
           </div>
           <div className="border-t border-black/10" />
-          <a href="/dashboard" className="block px-3 py-2 text-sm hover:bg-black/5">Dashboard</a>
-          <div className="border-t border-black/10" />
           <div className="px-3 py-2">
             <LogoutButton />
           </div>

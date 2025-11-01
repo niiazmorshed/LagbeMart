@@ -2,11 +2,14 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMeQuery } from "@/lib/services/authApi";
+import { useCreateOrderMutation } from "@/lib/services/orderApi";
+import toast from "react-hot-toast";
 
 export default function ProductDetailsPage() {
   const params = useParams();
   const router = useRouter();
   const { data: userData } = useMeQuery();
+  const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
@@ -43,6 +46,20 @@ export default function ProductDetailsPage() {
     return null;
   }
 
+  const handleAddToCart = async () => {
+    if (!canAddToCart || isCreatingOrder || !product._id) return;
+    
+    try {
+      const result = await createOrder({ productId: product._id }).unwrap();
+      if (result.success) {
+        toast.success("Order placed successfully!");
+        router.push("/dashboard");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.error || "Failed to place order. Please try again.");
+    }
+  };
+
   return (
     <div className="min-h-screen py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,14 +86,15 @@ export default function ProductDetailsPage() {
               <div className="flex items-center justify-between mb-8">
                 <span className="text-3xl font-bold text-blue-700">${product.price}</span>
                 <button 
-                  disabled={!canAddToCart}
+                  onClick={handleAddToCart}
+                  disabled={!canAddToCart || isCreatingOrder}
                   className={`px-8 py-3 rounded-full font-medium transition-colors ${
-                    canAddToCart 
+                    canAddToCart && !isCreatingOrder
                       ? "bg-blue-700 text-white hover:bg-blue-800 cursor-pointer" 
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   }`}
                 >
-                  Add to Cart
+                  {isCreatingOrder ? "Placing Order..." : "Add to Cart"}
                 </button>
               </div>
 
