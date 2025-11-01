@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { Home, Package, Plus, ShoppingBag, User } from "lucide-react";
+import { Home, Package, Plus, ShoppingBag, User, Users } from "lucide-react";
 import { useMeQuery } from "@/lib/services/authApi";
 
 export default function Sidebar({ collapsible = false }: { collapsible?: boolean }) {
@@ -9,6 +9,8 @@ export default function Sidebar({ collapsible = false }: { collapsible?: boolean
   const user = data?.data as { name?: string; email?: string; role?: string } | undefined;
   const initials = (user?.name || user?.email || "U").charAt(0).toUpperCase();
   const [open, setOpen] = useState(!collapsible);
+  const roleLabel = user?.role === "admin" ? "Admin" : user?.role === "seller" ? "Seller" : "Buyer";
+  const roleColor = user?.role === "admin" ? "bg-red-100 text-red-700" : user?.role === "seller" ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700";
 
   return (
     <div>
@@ -23,17 +25,35 @@ export default function Sidebar({ collapsible = false }: { collapsible?: boolean
             <div className="h-12 w-12 rounded-full bg-black/10 flex items-center justify-center text-lg font-semibold">
               {initials}
             </div>
-            <div className="mt-3 text-sm font-medium truncate">{user?.name || "Seller"}</div>
+            <div className="mt-3 text-sm font-medium truncate">{user?.name || roleLabel}</div>
             <div className="text-xs text-black/70 truncate">{user?.email}</div>
-            <div className="mt-2 inline-flex items-center px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs">Seller</div>
+            <div className={`mt-2 inline-flex items-center px-2 py-0.5 rounded-full ${roleColor} text-xs`}>{roleLabel}</div>
           </div>
 
           <nav className="flex-1 px-2 py-4 text-sm">
-            <SidebarLink href="/dashboard" icon={<Home size={16} />}>Dashboard</SidebarLink>
-            <SidebarLink href="/dashboard/products" icon={<Package size={16} />}>My Products</SidebarLink>
-            <SidebarLink href="/dashboard/products/add" icon={<Plus size={16} />}>Add Product</SidebarLink>
-            <SidebarLink href="/dashboard/orders" icon={<ShoppingBag size={16} />}>Orders</SidebarLink>
-            <SidebarLink href="/dashboard/profile" icon={<User size={16} />}>Profile</SidebarLink>
+            {user?.role === "admin" && (
+              <>
+                <SidebarLink href="/dashboard/admin" icon={<Home size={16} />}>Dashboard</SidebarLink>
+                <SidebarLink href="/dashboard/admin/users" icon={<Users size={16} />}>All Users</SidebarLink>
+                <SidebarLink href="/dashboard/profile" icon={<User size={16} />}>Profile</SidebarLink>
+              </>
+            )}
+            {user?.role === "seller" && (
+              <>
+                <SidebarLink href="/dashboard" icon={<Home size={16} />}>Dashboard</SidebarLink>
+                <SidebarLink href="/dashboard/products" icon={<Package size={16} />}>My Products</SidebarLink>
+                <SidebarLink href="/dashboard/products/add" icon={<Plus size={16} />}>Add Product</SidebarLink>
+                <SidebarLink href="/dashboard/orders" icon={<ShoppingBag size={16} />}>Orders</SidebarLink>
+                <SidebarLink href="/dashboard/profile" icon={<User size={16} />}>Profile</SidebarLink>
+              </>
+            )}
+            {user?.role === "buyer" && (
+              <>
+                <SidebarLink href="/dashboard" icon={<Home size={16} />}>Dashboard</SidebarLink>
+                <SidebarLink href="/dashboard/orders" icon={<ShoppingBag size={16} />}>My Orders</SidebarLink>
+                <SidebarLink href="/dashboard/profile" icon={<User size={16} />}>Profile</SidebarLink>
+              </>
+            )}
           </nav>
 
           <div className="mt-auto p-3 border-t border-black/10">
