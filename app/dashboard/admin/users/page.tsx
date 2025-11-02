@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+const ADMIN_EMAIL = "niaz@gmail.com";
+
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -19,6 +21,12 @@ export default function AdminUsersPage() {
   }, []);
 
   async function handleDelete(id: string, email: string) {
+    // Prevent deletion of default admin
+    if (email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+      toast.error("Cannot delete the default admin account");
+      return;
+    }
+
     if (!confirm(`Are you sure you want to delete user "${email}"?\n\nThis will permanently remove the user and all their order history.`)) return;
     
     setDeletingId(id);
@@ -77,46 +85,57 @@ export default function AdminUsersPage() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-100">
-                {users.map((u) => (
-                  <tr key={String(u._id)} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{u.email}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{u.name || "—"}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          u.role === "admin"
-                            ? "bg-red-100 text-red-700"
-                            : u.role === "seller"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-green-100 text-green-700"
-                        }`}
-                      >
-                        {u.role || "buyer"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-600">
-                        {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—"}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <button
-                        onClick={() => handleDelete(String(u._id), u.email)}
-                        disabled={deletingId === String(u._id)}
-                        className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        {deletingId === String(u._id) ? "Deleting..." : "Delete"}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {users.map((u) => {
+                  const isDefaultAdmin = u.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+                  return (
+                    <tr key={String(u._id)} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <div className="text-sm font-medium text-gray-900">{u.email}</div>
+                          {isDefaultAdmin && (
+                            <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700" title="Default Admin - Cannot be deleted">
+                              🔒 Protected
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{u.name || "—"}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                            u.role === "admin"
+                              ? "bg-red-100 text-red-700"
+                              : u.role === "seller"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-green-100 text-green-700"
+                          }`}
+                        >
+                          {u.role || "buyer"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-600">
+                          {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—"}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          onClick={() => handleDelete(String(u._id), u.email)}
+                          disabled={deletingId === String(u._id) || isDefaultAdmin}
+                          className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          title={isDefaultAdmin ? "Cannot delete default admin" : ""}
+                        >
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                          {deletingId === String(u._id) ? "Deleting..." : "Delete"}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
