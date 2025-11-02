@@ -2,6 +2,24 @@
 
 A full-stack e-commerce platform built with Next.js 16, MongoDB, Redux Toolkit, and Cloudinary. LagbeMart provides a comprehensive multi-role marketplace experience with separate dashboards for Administrators, Sellers, and Buyers.
 
+## 🔐 Test Credentials
+
+### Admin Account
+- **Email**: `niaz@gmail.com`
+- **Password**: (Create during registration or set in database)
+- **Protected**: This account cannot be deleted
+- **Features**: Full platform access, user management, all orders visibility
+
+### Seller Accounts
+- **Seller 1**: `levi@gmail.com`
+- **Seller 2**: `erwin@gmail.com`
+- **Features**: Product management, order fulfillment, sales analytics
+
+### Buyer Account
+- Register any new user to get a buyer account
+- **Default Role**: All new registrations are buyers by default
+- **Features**: Product browsing, order placement, order tracking
+
 ## 📋 Table of Contents
 
 - [Features](#features)
@@ -9,7 +27,6 @@ A full-stack e-commerce platform built with Next.js 16, MongoDB, Redux Toolkit, 
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
 - [Environment Setup](#environment-setup)
-- [Test Credentials](#test-credentials)
 - [Key Features by Role](#key-features-by-role)
 - [API Routes](#api-routes)
 - [Deployment](#deployment)
@@ -125,24 +142,6 @@ lagbemart/
 
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 🔐 Test Credentials
-
-### Admin Account
-- **Email**: `niaz@gmail.com`
-- **Password**: (Create during registration or set in database)
-- **Protected**: This account cannot be deleted
-- **Features**: Full platform access, user management, all orders visibility
-
-### Seller Accounts
-- **Seller 1**: `levi@gmail.com`
-- **Seller 2**: `erwin@gmail.com`
-- **Features**: Product management, order fulfillment, sales analytics
-
-### Buyer Account
-- Register any new user to get a buyer account
-- **Default Role**: All new registrations are buyers by default
-- **Features**: Product browsing, order placement, order tracking
 
 ## 👥 Key Features by Role
 

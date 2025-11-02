@@ -1,31 +1,31 @@
 export default async function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <main className="flex-1 py-8 px-4">
+    <div className="h-[calc(100vh-4rem)] overflow-hidden">
+      <main className="h-full flex items-center justify-center px-4 py-8">
         {/* Hero Banner - Deep blue-purple gradient, centered with max-width */}
-        <section className="relative mx-auto max-w-[1200px] min-h-[70vh] overflow-hidden rounded-[20px]">
+        <section className="relative w-full max-w-[1200px] overflow-hidden rounded-[20px]">
           {/* Decorative background circles - positioned exactly like reference */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-20 w-[500px] h-[500px] rounded-full bg-blue-500/15 blur-3xl" />
-            <div className="absolute top-40 left-0 w-[600px] h-[600px] rounded-full bg-purple-500/15 blur-3xl" />
-            <div className="absolute top-24 right-20 w-[550px] h-[550px] rounded-full bg-purple-500/15 blur-3xl" />
+            <div className="absolute top-10 left-20 w-[350px] h-[350px] rounded-full bg-blue-500/15 blur-3xl" />
+            <div className="absolute top-20 left-0 w-[400px] h-[400px] rounded-full bg-purple-500/15 blur-3xl" />
+            <div className="absolute top-10 right-20 w-[380px] h-[380px] rounded-full bg-purple-500/15 blur-3xl" />
           </div>
 
           {/* Chess pieces pattern - very subtle */}
           <div className="absolute inset-0 opacity-5">
-            <div className="absolute left-20 top-1/2 -translate-y-1/2 w-96 h-96">
-              <div className="text-[400px] leading-none">♞</div>
+            <div className="absolute left-20 top-1/2 -translate-y-1/2 w-64 h-64">
+              <div className="text-[300px] leading-none">♞</div>
             </div>
-            <div className="absolute right-20 top-1/2 -translate-y-1/2 w-96 h-96">
-              <div className="text-[400px] leading-none text-white/20">♞</div>
+            <div className="absolute right-20 top-1/2 -translate-y-1/2 w-64 h-64">
+              <div className="text-[300px] leading-none text-white/20">♞</div>
             </div>
           </div>
 
           {/* Gradient background - professional blue gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#000106c2] via-[#0062ff76] to-[#0452fb61]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#172142] via-[#3b83f6c7] to-[#0a4bd8d7]" />
 
           {/* Content */}
-          <div className="relative px-4 sm:px-6 lg:px-8 py-12 md:py-16 flex items-center min-h-[60vh]">
+          <div className="relative px-8 sm:px-12 lg:px-16 py-16 md:py-20 flex items-center">
             <div className="text-center text-white w-full">
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
                 Discover Deals on <span className="opacity-95">Everything</span>{" "}
