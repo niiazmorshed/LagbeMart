@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { cookies } from "next/headers";
-import { ObjectId } from "mongodb";
+import { ObjectId, UpdateFilter } from "mongodb";
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -80,7 +80,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         $push: {
           statusHistory: statusUpdate,
         },
-      }
+      } as unknown as UpdateFilter<any>
     );
 
     // Get updated order

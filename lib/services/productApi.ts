@@ -18,7 +18,7 @@ export const productApi = api.injectEndpoints({
       query: (id) => ({ url: "/products/" + id, method: "DELETE" }),
       invalidatesTags: ["User"],
     }),
-    updateProduct: build.mutation<{ success: boolean; data?: any }, { id: string; body: any }>({
+    updateProduct: build.mutation<{ success: boolean; data?: any; error?: string }, { id: string; body: any }>({
       query: ({ id, body }) => ({ url: "/products/" + id, method: "PUT", body }),
       invalidatesTags: ["User"],
     }),
