@@ -139,7 +139,7 @@ export default function ProductDetailsPage() {
                 disabled={!canAddToCart || isCreatingOrder || isOutOfStock}
                 className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
                   canAddToCart && !isCreatingOrder && !isOutOfStock
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-[1.02] cursor-pointer" 
+                    ? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl cursor-pointer" 
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >

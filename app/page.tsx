@@ -1,9 +1,9 @@
 export default async function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-1">
-        {/* Hero Banner - Deep blue-purple gradient, viewport height */}
-        <section className="relative min-h-[90vh] overflow-hidden rounded-2xl mx-4 my-4">
+      <main className="flex-1 py-8 px-4">
+        {/* Hero Banner - Deep blue-purple gradient, centered with max-width */}
+        <section className="relative mx-auto max-w-[1200px] min-h-[70vh] overflow-hidden rounded-[20px]">
           {/* Decorative background circles - positioned exactly like reference */}
           <div className="absolute inset-0">
             <div className="absolute top-20 left-20 w-[500px] h-[500px] rounded-full bg-blue-500/15 blur-3xl" />
@@ -21,11 +21,11 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Gradient background - darker shades */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1a2561] via-[#4c1d95] to-[#5b21b6]" />
+          {/* Gradient background - professional blue gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#000106c2] via-[#0062ff76] to-[#0452fb61]" />
 
           {/* Content */}
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 flex items-center min-h-[90vh]">
+          <div className="relative px-4 sm:px-6 lg:px-8 py-12 md:py-16 flex items-center min-h-[60vh]">
             <div className="text-center text-white w-full">
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
                 Discover Deals on <span className="opacity-95">Everything</span>{" "}
@@ -38,13 +38,13 @@ export default async function Home() {
               <div className="mt-12 flex items-center justify-center gap-4">
                 <a
                   href="/shop"
-                  className="inline-flex items-center rounded-md bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 text-base font-medium hover:from-blue-700 hover:to-purple-700 transition-colors shadow-lg"
+                  className="inline-flex items-center rounded-lg bg-blue-600 text-white px-8 py-3.5 text-base font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
                 >
                   Start Shopping Today
                 </a>
                 <a
                   href="/contact"
-                  className="inline-flex items-center rounded-md bg-white/10 text-white border border-white/30 px-6 py-3 text-base font-medium hover:bg-white/15 transition-colors"
+                  className="inline-flex items-center rounded-lg bg-white/10 text-white border border-white/30 px-8 py-3.5 text-base font-semibold hover:bg-white/20 transition-colors backdrop-blur-sm"
                 >
                   Contact Us
                 </a>

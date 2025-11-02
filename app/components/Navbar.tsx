@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
 import UserMenu from "./UserMenu";
+import NavLinks from "./NavLinks";
 
 export const dynamic = "force-dynamic";
 
@@ -18,17 +19,7 @@ export default async function Navbar() {
             LagbeMart
           </Link>
         </div>
-        <nav className="hidden md:flex items-center gap-6 text-sm">
-          <Link href="/" className="hover:opacity-70 transition-opacity">
-            Home
-          </Link>
-          <Link href="/shop" className="hover:opacity-70 transition-opacity">
-            Shop
-          </Link>
-          <Link href="/contact" className="hover:opacity-70 transition-opacity">
-            Contact
-          </Link>
-        </nav>
+        <NavLinks />
         <div className="flex items-center gap-3">
           {session ? (
             <UserMenu name={session.name} email={session.email} />

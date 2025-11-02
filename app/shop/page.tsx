@@ -2,16 +2,71 @@
 import { useListProductsQuery } from "@/lib/services/productApi";
 import { useRouter } from "next/navigation";
 import { useMeQuery } from "@/lib/services/authApi";
+import { useState, useMemo } from "react";
 
 export default function ShopPage() {
   const router = useRouter();
   const { data, isLoading } = useListProductsQuery();
   const { data: userData } = useMeQuery();
-  const products = data?.data || [];
+  const allProducts = data?.data || [];
   const currentUser = userData?.data;
   const userRole = currentUser?.role;
   // Default to true if no user is logged in (buyers can add to cart)
   const canAddToCart = !userRole || (userRole !== "admin" && userRole !== "seller");
+  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"relevance" | "price-low" | "price-high" | "name">("relevance");
+
+  // Filter and sort products
+  const products = useMemo(() => {
+    let filtered = allProducts;
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = allProducts.filter((product: any) => {
+        const titleMatch = product.title?.toLowerCase().includes(query);
+        const descriptionMatch = product.description?.toLowerCase().includes(query);
+        const categoryMatch = product.category?.toLowerCase().includes(query);
+        const sellerMatch = product.sellerName?.toLowerCase().includes(query);
+        const priceMatch = product.price?.toString().includes(query);
+        return titleMatch || descriptionMatch || categoryMatch || sellerMatch || priceMatch;
+      });
+    }
+
+    // Sort products
+    const sorted = [...filtered].sort((a: any, b: any) => {
+      switch (sortBy) {
+        case "price-low":
+          return a.price - b.price;
+        case "price-high":
+          return b.price - a.price;
+        case "name":
+          return (a.title || "").localeCompare(b.title || "");
+        case "relevance":
+        default:
+          // Relevance: exact title match first, then title contains, then others
+          if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase().trim();
+            const aTitle = (a.title || "").toLowerCase();
+            const bTitle = (b.title || "").toLowerCase();
+            
+            const aExact = aTitle === query;
+            const bExact = bTitle === query;
+            if (aExact && !bExact) return -1;
+            if (!aExact && bExact) return 1;
+            
+            const aStarts = aTitle.startsWith(query);
+            const bStarts = bTitle.startsWith(query);
+            if (aStarts && !bStarts) return -1;
+            if (!aStarts && bStarts) return 1;
+          }
+          return 0;
+      }
+    });
+
+    return sorted;
+  }, [allProducts, searchQuery, sortBy]);
 
   return (
     <div className="min-h-screen py-10 md:py-16">
@@ -23,10 +78,52 @@ export default function ShopPage() {
           </p>
         </div>
 
+        {/* Search and Filter Bar */}
+        <div className="mb-8 bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
+                Search Products
+              </label>
+              <input
+                id="search"
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by name, category, price..."
+                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+              />
+            </div>
+            <div>
+              <label htmlFor="sort" className="block text-sm font-medium text-gray-700 mb-2">
+                Sort By
+              </label>
+              <select
+                id="sort"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+              >
+                <option value="relevance">Relevance</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">Name A-Z</option>
+              </select>
+            </div>
+          </div>
+          {searchQuery && (
+            <div className="mt-4 text-sm text-gray-600">
+              Found {products.length} {products.length === 1 ? "product" : "products"} matching "{searchQuery}"
+            </div>
+          )}
+        </div>
+
         {isLoading ? (
           <div className="text-center py-12">Loading...</div>
         ) : products.length === 0 ? (
-          <div className="text-center py-12 text-black/70">No products available yet.</div>
+          <div className="text-center py-12 text-black/70">
+            {searchQuery ? `No products found matching "${searchQuery}"` : "No products available yet."}
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {products.map((product: any) => {
@@ -92,9 +189,9 @@ export default function ShopPage() {
                           }
                         }}
                         disabled={!canAddToCart || isOutOfStock}
-                        className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                        className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                           canAddToCart && !isOutOfStock
-                            ? "bg-blue-700 text-white hover:bg-blue-800 cursor-pointer" 
+                            ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer shadow-md hover:shadow-lg" 
                             : "bg-gray-300 text-gray-500 cursor-not-allowed"
                         }`}
                       >
