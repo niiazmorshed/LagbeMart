@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 export default function ProductDetailsPage() {
   const params = useParams();
   const router = useRouter();
-  const { data: userData } = useMeQuery();
+  const { data: userData, isLoading: userLoading } = useMeQuery();
   const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -17,6 +17,13 @@ export default function ProductDetailsPage() {
   const userRole = currentUser?.role;
   // Default to true if no user is logged in (buyers can add to cart)
   const canAddToCart = !userRole || (userRole !== "admin" && userRole !== "seller");
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!userLoading && !userData?.data) {
+      router.push("/login");
+    }
+  }, [userData, userLoading, router]);
 
   useEffect(() => {
     const prodId = params.id;

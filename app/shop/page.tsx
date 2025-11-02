@@ -2,12 +2,12 @@
 import { useListProductsQuery } from "@/lib/services/productApi";
 import { useRouter } from "next/navigation";
 import { useMeQuery } from "@/lib/services/authApi";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 export default function ShopPage() {
   const router = useRouter();
   const { data, isLoading } = useListProductsQuery();
-  const { data: userData } = useMeQuery();
+  const { data: userData, isLoading: userLoading } = useMeQuery();
   const allProducts = data?.data || [];
   const currentUser = userData?.data;
   const userRole = currentUser?.role;
@@ -16,6 +16,13 @@ export default function ShopPage() {
   
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"relevance" | "price-low" | "price-high" | "name">("relevance");
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!userLoading && !userData?.data) {
+      router.push("/login");
+    }
+  }, [userData, userLoading, router]);
 
   // Filter and sort products
   const products = useMemo(() => {
