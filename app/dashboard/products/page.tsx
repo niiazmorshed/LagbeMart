@@ -47,7 +47,15 @@ export default function ProductsPage() {
                   <td className="py-2 pr-4">{p.title}</td>
                   <td className="py-2 pr-4">{p.category}</td>
                   <td className="py-2 pr-4">${p.price}</td>
-                  <td className="py-2 pr-4">{p.stock}</td>
+                  <td className="py-2 pr-4">
+                    {p.stock === 0 ? (
+                      <span className="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                        Out of Stock
+                      </span>
+                    ) : (
+                      p.stock
+                    )}
+                  </td>
                   <td className="py-2 pr-4">
                     <button onClick={() => router.push(`/dashboard/products/edit/${p._id}`)} className="text-blue-600 hover:underline mr-3">Edit</button>
                     <button

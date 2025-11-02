@@ -31,15 +31,15 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen py-16 bg-gradient-to-b from-blue-50/50 to-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-blue-700 mb-4">Contact Us</h1>
           <p className="text-lg text-black/70 max-w-2xl mx-auto">
             Have a question or feedback? We'd love to hear from you! Send us a message and we'll respond as soon as possible.
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-lg p-8 md:p-12 border border-black/10">
+        <div className="bg-white rounded-3xl shadow-lg p-6 md:p-8 border border-black/10">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-black mb-2">
@@ -112,42 +112,6 @@ export default function ContactPage() {
               Send Message
             </button>
           </form>
-        </div>
-
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-black/10 text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">📍</span>
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Address</h3>
-            <p className="text-black/70 text-sm">
-              123 Commerce Street<br />
-              Business District<br />
-              City, Country 12345
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-black/10 text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">📧</span>
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Email</h3>
-            <p className="text-black/70 text-sm">
-              info@lagbemart.com<br />
-              support@lagbemart.com
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-black/10 text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">📱</span>
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Phone</h3>
-            <p className="text-black/70 text-sm">
-              +1 (555) 123-4567<br />
-              Mon-Fri, 9AM-6PM
-            </p>
-          </div>
         </div>
       </div>
     </div>
