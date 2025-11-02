@@ -4,20 +4,25 @@ A full-stack e-commerce platform built with Next.js 16, MongoDB, Redux Toolkit, 
 
 ## 🔐 Test Credentials
 
+All test accounts use the same password: `1234Aa`
+
 ### Admin Account
 - **Email**: `niaz@gmail.com`
-- **Password**: (Create during registration or set in database)
+- **Password**: `1234Aa`
 - **Protected**: This account cannot be deleted
 - **Features**: Full platform access, user management, all orders visibility
 
 ### Seller Accounts
 - **Seller 1**: `levi@gmail.com`
+  - **Password**: `1234Aa`
 - **Seller 2**: `erwin@gmail.com`
+  - **Password**: `1234Aa`
 - **Features**: Product management, order fulfillment, sales analytics
 
 ### Buyer Account
 - Register any new user to get a buyer account
 - **Default Role**: All new registrations are buyers by default
+- **Password**: You can set any password (e.g., `1234Aa`)
 - **Features**: Product browsing, order placement, order tracking
 
 ## 📋 Table of Contents
