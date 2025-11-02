@@ -19,10 +19,10 @@ export default function NavLinks() {
           <Link
             key={item.href}
             href={item.href}
-            className={`transition-opacity ${
+            className={`transition-colors ${
               isActive
-                ? "font-semibold text-blue-600 border-b-2 border-blue-600 pb-1"
-                : "hover:opacity-70"
+                ? "font-semibold text-blue-600"
+                : "text-gray-700 hover:text-blue-600"
             }`}
           >
             {item.label}

@@ -34,7 +34,7 @@ export default async function Navbar() {
           {session && (
             <Link
               href="/dashboard/profile"
-              className="inline-flex items-center gap-2 rounded-md bg-black text-white px-3 py-2 text-sm hover:bg-black/90 transition-colors"
+              className="inline-flex items-center gap-2 rounded-md bg-blue-600 text-white px-3 py-2 text-sm hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
             >
               <span>Dashboard</span>
             </Link>
