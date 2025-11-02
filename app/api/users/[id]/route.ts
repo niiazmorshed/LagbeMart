@@ -16,6 +16,17 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
     const col = db.collection("userCollection");
     const existing = await col.findOne({ _id: new ObjectId(id) });
     if (!existing) return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
+    
+    // Delete all orders related to this user (both as buyer and seller)
+    const ordersCol = db.collection("orderCollection");
+    await ordersCol.deleteMany({
+      $or: [
+        { buyerId: existing._id },
+        { sellerId: existing._id }
+      ]
+    });
+    
+    // Delete the user
     await col.deleteOne({ _id: existing._id });
     return NextResponse.json({ success: true });
   } catch (e: any) {

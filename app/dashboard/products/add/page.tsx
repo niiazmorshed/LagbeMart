@@ -26,6 +26,10 @@ export default function AddProductPage() {
 
   const onSubmit = async (values: FormValues) => {
     const files = imageInputRef.current?.files;
+    
+    // Show immediate loading notification
+    const loadingToast = toast.loading("Wait, your product is adding...");
+    
     try {
       const base64s: string[] = [];
       if (files && files.length) {
@@ -46,12 +50,17 @@ export default function AddProductPage() {
       const payload = { ...values, images } as any;
       const res = await addProduct(payload).unwrap();
       if (!res?.success) throw new Error(res?.error || "Failed to add product");
-      toast.success("Product added");
+      
+      // Dismiss loading toast and show success
+      toast.dismiss(loadingToast);
+      toast.success("Successfully added your product!");
       reset();
       setPreviewImages([]);
       if (imageInputRef.current) imageInputRef.current.value = "";
     } catch (e: any) {
-      toast.error(e?.message || "Failed");
+      // Dismiss loading toast and show error
+      toast.dismiss(loadingToast);
+      toast.error(e?.message || "Failed to add product");
     }
   };
 
