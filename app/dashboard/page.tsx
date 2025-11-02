@@ -11,9 +11,9 @@ export default async function DashboardHome() {
   if (session.role === "admin") {
     redirect("/dashboard/admin");
   } else if (session.role === "seller") {
-    redirect("/dashboard/products");
+    redirect("/dashboard/seller");
   } else if (session.role === "buyer") {
-    redirect("/dashboard/orders");
+    redirect("/dashboard/buyer");
   }
   
   redirect("/login");

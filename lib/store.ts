@@ -5,6 +5,7 @@ import authReducer from "./slices/authSlice";
 import "./services/authApi";
 import "./services/productApi";
 import "./services/orderApi";
+import "./services/adminApi";
 
 export const store = configureStore({
   reducer: {
