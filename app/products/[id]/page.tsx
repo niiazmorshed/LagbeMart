@@ -3,10 +3,12 @@ import { redirect } from "next/navigation";
 import ProductDetailsClient from "./ProductDetailsClient";
 
 type ProductDetailsPageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export default async function ProductDetailsPage({ params }: ProductDetailsPageProps) {
+export default async function ProductDetailsPage({
+  params,
+}: ProductDetailsPageProps) {
   const store = await cookies();
   const rawSession = store.get("lm_session")?.value;
 
@@ -25,8 +27,9 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
     redirect("/login");
   }
 
-  const productId = params.id;
+  const { id: productId } = await params;
 
-  return <ProductDetailsClient productId={productId} initialUser={parsedUser} />;
+  return (
+    <ProductDetailsClient productId={productId} initialUser={parsedUser} />
+  );
 }
-
