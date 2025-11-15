@@ -29,7 +29,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // NOTE: Plain-text comparison. In production, use hashed passwords.
     if (user.password !== password) {
       return NextResponse.json(
         { success: false, error: "Invalid email or password" },
