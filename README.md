@@ -1,18 +1,20 @@
-# 🛒 LagbeMart E-Commerce Platform
+# LagbeMart E-Commerce Platform
 
 A full-stack e-commerce platform built with Next.js 16, MongoDB, Redux Toolkit, and Cloudinary. LagbeMart provides a comprehensive multi-role marketplace experience with separate dashboards for Administrators, Sellers, and Buyers.
 
-## 🔐 Test Credentials
+## Test Credentials
 
 All test accounts use the same password: `1234Aa`
 
 ### Admin Account
+
 - **Email**: `niaz@gmail.com`
 - **Password**: `1234Aa`
 - **Protected**: This account cannot be deleted
 - **Features**: Full platform access, user management, all orders visibility
 
 ### Seller Accounts
+
 - **Seller 1**: `levi@gmail.com`
   - **Password**: `1234Aa`
 - **Seller 2**: `erwin@gmail.com`
@@ -20,12 +22,13 @@ All test accounts use the same password: `1234Aa`
 - **Features**: Product management, order fulfillment, sales analytics
 
 ### Buyer Account
+
 - Register any new user to get a buyer account
 - **Default Role**: All new registrations are buyers by default
 - **Password**: You can set any password (e.g., `1234Aa`)
 - **Features**: Product browsing, order placement, order tracking
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -36,9 +39,10 @@ All test accounts use the same password: `1234Aa`
 - [API Routes](#api-routes)
 - [Deployment](#deployment)
 
-## ✨ Features
+## Features
 
-### 🎯 Core Features
+### Core Features
+
 - **Multi-Role System**: Admin, Seller, and Buyer roles with specialized dashboards
 - **User Authentication**: Secure login/registration with session management
 - **Product Management**: Complete CRUD operations for products with Cloudinary image uploads
@@ -47,15 +51,17 @@ All test accounts use the same password: `1234Aa`
 - **Real-time Notifications**: React Hot Toast for user feedback
 - **Responsive Design**: Modern, professional UI with Tailwind CSS
 
-### 🛡️ Security Features
+### Security Features
+
 - Protected API routes with role-based access control
 - Default admin account protection (cannot be deleted)
 - Session-based authentication with cookies
 - Input validation with Zod and React Hook Form
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Frontend
+
 - **Framework**: Next.js 16 (App Router)
 - **UI Library**: React 19
 - **Styling**: Tailwind CSS 4
@@ -66,13 +72,14 @@ All test accounts use the same password: `1234Aa`
 - **Font**: Roboto
 
 ### Backend
+
 - **Runtime**: Node.js
 - **Database**: MongoDB with native driver
 - **Image Upload**: Cloudinary
 - **API**: Next.js API Routes
 - **Authentication**: Cookie-based sessions
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 lagbemart/
@@ -105,7 +112,7 @@ lagbemart/
 └── public/                 # Static assets
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -116,31 +123,35 @@ lagbemart/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd lagbemart
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
    Create a `.env.local` file in the root directory:
+
    ```env
    MONGODB_URI=your_mongodb_connection_string
    MONGODB_DB=your_database_name
-   
+
    CLOUD_NAME=your_cloudinary_cloud_name
    API_KEY=your_cloudinary_api_key
    API_SECRET=your_cloudinary_api_secret
-   
+
    ADMIN_EMAIL=niaz@gmail.com
    SELLER_EMAILS=levi@gmail.com,erwin@gmail.com
    ```
 
 4. **Run the development server**
+
    ```bash
    npm run dev
    ```
@@ -148,9 +159,10 @@ lagbemart/
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 👥 Key Features by Role
+## Key Features by Role
 
-### 👨‍💼 Admin Dashboard
+### Admin Dashboard
+
 - View comprehensive platform analytics
 - Manage all users (view/delete)
 - Monitor all orders across the platform
@@ -158,7 +170,8 @@ lagbemart/
 - Track revenue and user statistics
 - **Protected**: Default admin account cannot be deleted
 
-### 🏪 Seller Dashboard
+### Seller Dashboard
+
 - Add, edit, and delete products with image uploads
 - Track orders for their products
 - Update order statuses (Processing → Out for Delivery → Completed)
@@ -166,26 +179,30 @@ lagbemart/
 - Monitor stock levels and low inventory alerts
 - Product performance insights
 
-### 🛍️ Buyer Dashboard
+### Buyer Dashboard
+
 - Browse and search products with advanced filters
 - Place orders with Cash on Delivery payment
 - Track order history and status
 - View purchase analytics
 - Shopping cart functionality
 
-## 🔌 API Routes
+## API Routes
 
 ### Authentication
+
 - `POST /api/auth/login` - User login
 - `POST /api/auth/logout` - User logout
 - `GET /api/auth/me` - Get current user
 
 ### Users
+
 - `GET /api/users` - List all users (admin only)
 - `POST /api/users` - Register new user
 - `DELETE /api/users/[id]` - Delete user (admin only)
 
 ### Products
+
 - `GET /api/products` - List all products
 - `GET /api/products/[id]` - Get product by ID
 - `POST /api/products` - Create product (seller only)
@@ -194,15 +211,17 @@ lagbemart/
 - `GET /api/products/seller/my-products` - Get seller's products
 
 ### Orders
+
 - `GET /api/orders` - List orders (role-based filtering)
 - `POST /api/orders` - Create order (buyer only)
 - `GET /api/orders/[id]` - Get order by ID
 - `PUT /api/orders/[id]` - Update order status (seller only)
 
 ### Uploads
+
 - `POST /api/uploads` - Upload images to Cloudinary
 
-## 🎨 Design Highlights
+## Design Highlights
 
 - **Modern UI**: Clean, professional design with gradients and smooth animations
 - **Responsive**: Fully responsive across desktop, tablet, and mobile
@@ -211,7 +230,7 @@ lagbemart/
 - **Feedback**: React Hot Toast notifications for all user actions
 - **Typography**: Roboto font throughout for consistency
 
-## 📦 Order Status Flow
+## Order Status Flow
 
 1. **Pending Approval** → Buyer places order
 2. **Processing** → Seller starts preparing order
@@ -219,7 +238,7 @@ lagbemart/
 4. **Completed** → Order delivered successfully
 5. **Cancelled/Rejected** → Order cancelled (can happen at any stage)
 
-## 🔒 Security Considerations
+## Security Considerations
 
 - Role-based access control (RBAC)
 - Protected admin account
@@ -228,27 +247,31 @@ lagbemart/
 - API route protection
 - Cascade deletion for related data
 
-## 🚢 Deployment
+## Deployment
 
 ### Build for Production
+
 ```bash
 npm run build
 npm start
 ```
 
 ### Deploy to Vercel
+
 1. Push your code to GitHub
 2. Import project in Vercel
 3. Add environment variables
 4. Deploy!
 
 ### Environment Variables for Production
+
 Set all environment variables in your hosting platform:
+
 - MongoDB connection string
 - Cloudinary credentials
 - Admin and seller emails
 
-## 📝 Development Notes
+## Development Notes
 
 - Uses Next.js 16 with Server Components by default
 - All dashboard pages are client components for interactivity
@@ -256,7 +279,7 @@ Set all environment variables in your hosting platform:
 - Cloudinary for image hosting and optimization
 - MongoDB native driver (no Mongoose) for direct database access
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create your feature branch
@@ -264,14 +287,14 @@ Set all environment variables in your hosting platform:
 4. Push to the branch
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is private and proprietary.
 
-## 👤 Author
+## Author
 
 **LagbeMart Team**
 
 ---
 
-Built with ❤️ using Next.js, MongoDB, and modern web technologies.
+Built with Next.js, MongoDB, and modern web technologies.
