@@ -34,10 +34,14 @@ All test accounts use the same password: `1234Aa`
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
-- [Environment Setup](#environment-setup)
 - [Key Features by Role](#key-features-by-role)
 - [API Routes](#api-routes)
+- [Design Highlights](#design-highlights)
+- [Order Status Flow](#order-status-flow)
+- [Security Considerations](#security-considerations)
 - [Deployment](#deployment)
+- [Development Notes](#development-notes)
+- [Contributing](#contributing)
 
 ## Features
 
@@ -82,7 +86,7 @@ All test accounts use the same password: `1234Aa`
 ## Project Structure
 
 ```
-lagbemart/
+LagbeMart/
 ├── app/
 │   ├── api/                  # API routes
 │   │   ├── auth/            # Authentication endpoints
@@ -126,7 +130,7 @@ lagbemart/
 
    ```bash
    git clone https://github.com/niiazmorshed/LagbeMart.git
-   cd lagbemart
+   cd LagbeMart
    ```
 
 2. **Install dependencies**
@@ -260,8 +264,8 @@ npm start
 
 1. Push your code to GitHub
 2. Import project in Vercel
-3. Add environment variables
-4. Deploy!
+3. Add environment variables in Vercel dashboard
+4. Deploy automatically on push to main branch
 
 ### Environment Variables for Production
 
@@ -281,10 +285,12 @@ Set all environment variables in your hosting platform:
 
 ## Contributing
 
+Contributions are welcome! Please follow these steps:
+
 1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
 ## Author
