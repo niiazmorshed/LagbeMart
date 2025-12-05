@@ -125,7 +125,7 @@ lagbemart/
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/niiazmorshed/LagbeMart.git
    cd lagbemart
    ```
 
@@ -287,13 +287,9 @@ Set all environment variables in your hosting platform:
 4. Push to the branch
 5. Open a Pull Request
 
-## License
-
-This project is private and proprietary.
-
 ## Author
 
-**LagbeMart Team**
+**Niaz Morshed**
 
 ---
 
